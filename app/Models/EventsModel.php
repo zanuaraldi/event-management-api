@@ -38,4 +38,8 @@ class EventsModel extends Model implements AuthenticatableContract, Authorizable
     public function attendances(): HasMany {
         return $this->hasMany(AttendancesModel::class, 'event_id', 'event_id');
     }
+
+    public function feedbacks(): HasMany {
+        return $this->hasMany(FeedbacksModel::class, 'event_id', 'event_id');
+    }
 }

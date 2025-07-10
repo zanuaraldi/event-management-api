@@ -31,4 +31,8 @@ class UsersModel extends Model implements AuthenticatableContract, AuthorizableC
     public function attendances(): HasMany {
         return $this->hasMany(AttendancesModel::class, 'user_id', 'user_id');
     }
+
+    public function feedbacks(): HasMany {
+        return $this->hasMany(FeedbacksModel::class, 'user_id', 'user_id');
+    }
 }
