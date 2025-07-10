@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('event_id')->index();
             $table->enum('status', ['registered', 'cancelled']);
             $table->enum('payment_status', ['pending', 'paid'])->default('pending');
-            $table->text('qr_code_url');
+            $table->text('qr_code_url')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('user_id')->on('users');
