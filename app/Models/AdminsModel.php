@@ -15,7 +15,7 @@ class AdminsModel extends Model implements AuthenticatableContract, Authorizable
 
     protected $table = 'admins';
     protected $primaryKey = 'admin_id';
-    protected $fillable = ['name', 'email', 'password', 'created_at', 'updated_at'];
+    protected $fillable = ['name', 'email', 'password', 'phone', 'created_at', 'updated_at'];
     protected $hidden = ['password'];
     protected $casts = ['password' => 'hashed'];
 }
