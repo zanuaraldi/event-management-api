@@ -44,5 +44,6 @@ class OrganizersSeeder extends Seeder
                 'phone' => '081234567890'
             ]
         ];
+        DB::table('organizers')->insert($data);
     }
 }
