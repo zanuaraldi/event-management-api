@@ -62,4 +62,46 @@ class EventsController extends BaseController
             ], 500);
         }
     }
+
+    public function updateEvent(Request $request, $id)
+    {
+        try {
+            $event = EventsModel::findOrFail($id);
+            if (!$event) {
+                return response()->json([
+                    'success' => false,
+                    'massage' => 'Data event tidak ada'
+                ], 404);
+            }
+
+            $validator = Validator::make($request->all(), [
+                'organizer_id' => 'required|exists:organizers,organizer_id',
+                'title' => 'required|string|max:255',
+                'description' => 'required|string|max:255',
+                'is_private' => 'required|min:0|max:1',
+                'location' => 'required|string||max:150',
+                'start_date' => 'required',
+                'end_date' => 'required',
+                'price' => 'required|numeric'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'message' => 'Validasi gagal',
+                    'error' => $validator->errors()
+                ], 400);
+            }
+
+            $event->update($validator->validate());
+            return response()->json([
+                'success' => true,
+                'massage' => 'Data berhasil di update',
+                'data' => $event
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Terjadi kesalahan ketika menambah data'
+            ], 500);
+        }
+    }
 }
