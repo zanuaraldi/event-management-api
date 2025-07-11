@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('location', 150);
             $table->datetime('start_date');
             $table->datetime('end_date');
-            $table->decimal('price', 10,2);
+            $table->integer('price');
             $table->timestamps();
 
             $table->foreign('organizer_id')->references('organizer_id')->on('organizers');

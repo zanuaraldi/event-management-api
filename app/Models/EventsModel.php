@@ -39,7 +39,7 @@ class EventsModel extends Model implements AuthenticatableContract, Authorizable
         return $this->hasMany(AttendancesModel::class, 'event_id', 'event_id');
     }
 
-    public function feedbacks(): HasMany {
+    public function feedbacks(): HasMany {  
         return $this->hasMany(FeedbacksModel::class, 'event_id', 'event_id');
     }
 }

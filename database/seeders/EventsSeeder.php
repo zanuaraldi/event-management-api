@@ -22,7 +22,7 @@ class EventsSeeder extends Seeder
                 'location' => 'Jl. Suhat',
                 'start_date' => '2025-07-10 12:30:00',
                 'end_date' => '2025-07-10 17:30:00',
-                'price' => '50000.00'
+                'price' => '50000'
             ],
             [
                 'organizer_id' => 2,
@@ -32,7 +32,7 @@ class EventsSeeder extends Seeder
                 'location' => 'Jl. Dinoyo',
                 'start_date' => '2025-08-07 08:00:00',
                 'end_date' => '2025-08-07 15:00:00',
-                'price' => '75000.00'
+                'price' => '75000'
             ],
             [
                 'organizer_id' => 3,
@@ -42,7 +42,7 @@ class EventsSeeder extends Seeder
                 'location' => 'Jl. Jakarta',
                 'start_date' => '2025-07-25 09:00:00',
                 'end_date' => '2025-07-25 13:00:00',
-                'price' => '150000.00'
+                'price' => '150000'
             ],
             [
                 'organizer_id' => 4,
@@ -52,7 +52,7 @@ class EventsSeeder extends Seeder
                 'location' => 'Jl. Suhat',
                 'start_date' => '2025-10-18 07:30:00',
                 'end_date' => '2025-10-18 11:00:00',
-                'price' => '80000.00'
+                'price' => '80000'
             ],
             [
                 'organizer_id' => 1,
@@ -62,7 +62,7 @@ class EventsSeeder extends Seeder
                 'location' => 'Jl. Suhat',
                 'start_date' => '2025-08-10 08:00:00',
                 'end_date' => '2025-10-14 15:00:00',
-                'price' => '70000.00'
+                'price' => '70000'
             ]
         ];
         DB::table('events')->insert($data);
