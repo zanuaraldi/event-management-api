@@ -9,8 +9,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Laravel\Lumen\Auth\Authorizable;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class OrganizersModel extends Model implements AuthenticatableContract, AuthorizableContract
+class OrganizersModel extends Model implements AuthenticatableContract, AuthorizableContract, JWTSubject
 {
     use Authenticatable, Authorizable, HasFactory;
 
@@ -22,5 +23,15 @@ class OrganizersModel extends Model implements AuthenticatableContract, Authoriz
 
     public function events(): HasMany {
         return $this->hasMany(EventsModel::class, 'organizer_id', 'organizer_id');
+    }
+
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+    
+    public function getJWTCustomClaims()
+    {
+        return [];
     }
 }
