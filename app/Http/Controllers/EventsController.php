@@ -32,7 +32,6 @@ class EventsController extends BaseController
     {
         try {
             $validator = Validator::make($request->all(), [
-                'organizer_id' => 'required|exists:organizers,organizer_id',
                 'title' => 'required|string|max:255',
                 'description' => 'required|string|max:255',
                 'is_private' => 'required|min:0|max:1',
@@ -48,8 +47,17 @@ class EventsController extends BaseController
                     'error' => $validator->errors()
                 ], 400);
             }
-            // nanti ganti perfield karena organizer_id dari auth()
-            $event = EventsModel::create($validator->validate());
+            
+            $event = EventsModel::create([
+                'organizer_id' => auth()->user()->organizer_id,
+                'title' => $request->title,
+                'description' => $request->description,
+                'is_private' => $request->is_private,
+                'location' => $request->location,
+                'start_date' => $request->start_date,
+                'end_date' => $request->end_date,
+                'price' => $request->price
+            ]);
             return response()->json([
                 'success' => true,
                 'message' => 'Tambah data berhasil dilakukan',
@@ -75,7 +83,6 @@ class EventsController extends BaseController
             }
 
             $validator = Validator::make($request->all(), [
-                'organizer_id' => 'required|exists:organizers,organizer_id',
                 'title' => 'required|string|max:255',
                 'description' => 'required|string|max:255',
                 'is_private' => 'required|min:0|max:1',
@@ -92,7 +99,15 @@ class EventsController extends BaseController
                 ], 400);
             }
 
-            $event->update($validator->validate());
+            $event->update([
+                'title' => $request->title,
+                'description' => $request->description,
+                'is_private' => $request->is_private,
+                'location' => $request->location,
+                'start_date' => $request->start_date,
+                'end_date' => $request->end_date,
+                'price' => $request->price
+            ]);
             return response()->json([
                 'success' => true,
                 'massage' => 'Data berhasil di update',
