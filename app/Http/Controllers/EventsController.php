@@ -104,4 +104,27 @@ class EventsController extends BaseController
             ], 500);
         }
     }
+
+    public function destoryEvent($id){
+        try {
+            $event = EventsModel::findOrFail($id);
+
+            if(!$event){
+                return response()->json([
+                    'success' => false,
+                    'massage' => 'Data tidak ditemukan'
+                ], 400);
+            }
+
+            $event->delete();
+            return response()->json([
+                'success' => true,
+                'massage' => 'Data berhasil dihapus'
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'massage' => 'Terjadi kesalahan'
+            ], 500);
+        }
+    }
 }
