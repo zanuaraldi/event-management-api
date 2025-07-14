@@ -133,15 +133,22 @@ class EventsController extends BaseController
         }
     }
 
-    public function destoryEvent($id){
+    public function destroyEvent($id){
         try {
             $event = EventsModel::findOrFail($id);
 
             if(!$event){
                 return response()->json([
                     'success' => false,
-                    'massage' => 'Data tidak ditemukan'
+                    'message' => 'Data tidak ditemukan'
                 ], 400);
+            }
+
+            if($event->organizer_id != auth('organizers')->user()->organizer_id){
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Tidak ada izin untuk menghapus'
+                ],400);
             }
 
             $event->delete();
