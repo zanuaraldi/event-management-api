@@ -28,6 +28,19 @@ class EventsController extends BaseController
         }
     }
 
+    public function getEventOrganizer(){
+        try {
+            $event = EventsModel::select('event_id', 'organizer_id', 'title', 'description', 'is_private', 'location', 'start_date', 'end_date', 'price')->where('organizer_id', auth('organizers')->user()->organizer_id)->get();
+
+            return response()->json($event, 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Terjadi kesalahan',
+                'error' => $th->getMessage()
+            ], 500);
+        }
+    }
+
     public function storeEvent(Request $request)
     {
         try {
