@@ -85,4 +85,66 @@ class SessionsController extends BaseController
             ], 500);
         }
     }
+
+    public function updateSession(Request $request, $id)
+    {
+        try {
+            $session = SessionsModel::find($id);
+            if (!$session) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Data tidak ada'
+                ], 400);
+            }
+
+            $event = EventsModel::select('event_id', 'organizer_id', 'start_date', 'end_date')->where('event_id', $session->event_id)->first();
+
+            if ($event->organizer_id != auth('organizers')->user()->organizer_id) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Anda tidak punya izin untuk update sesi ini'
+                ], 401);
+            }
+
+            $validator = Validator::make($request->all(), [
+                'title' => 'required|string|max:150',
+                'speaker' => 'required|string|max:100',
+                'start_time' => 'required|date',
+                'end_time' => 'required|date',
+            ]);
+
+            $validator->after(function ($validator) use ($request, $event) {
+                $startTime = Carbon::parse($request->start_time);
+                $endTime   = Carbon::parse($request->end_time);
+
+                if ($startTime < $event->start_date || $endTime > $event->end_date) {
+                    $validator->errors()->add('start_time', 'Waktu session harus berada di antara waktu event.');
+                }
+            });
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'message' => 'Validasi gagal',
+                    'error' => $validator->errors()
+                ], 400);
+            }
+
+            $session->update([
+                'title' => $request->title,
+                'speaker' => $request->speaker,
+                'start_time' => $request->start_time,
+                'end_time' => $request->end_time
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Data berhasil di update',
+                'data' => $session
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'massage' => 'Terjadi kesalahan'
+            ], 500);
+        }
+    }
 }
