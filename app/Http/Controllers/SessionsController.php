@@ -180,4 +180,17 @@ class SessionsController extends BaseController
             ], 500);
         }
     }
+
+    public function getSession($id)
+    {
+        try {
+            $session = SessionsModel::select('session_id', 'event_id', 'title', 'speaker', 'start_time', 'end_time')->where('event_id', $id)->get();
+
+            return response()->json($session, 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'massage' => 'Terjadi kesalahan'
+            ], 500);
+        }
+    }
 }
