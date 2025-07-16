@@ -147,4 +147,37 @@ class SessionsController extends BaseController
             ], 500);
         }
     }
+
+    public function destroySession($id)
+    {
+        try {
+            $session = SessionsModel::find($id);
+            if (!$session) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Data tidak ada'
+                ], 400);
+            }
+
+            $event = EventsModel::select('event_id', 'organizer_id', 'start_date', 'end_date')->where('event_id', $session->event_id)->first();
+
+            if ($event->organizer_id != auth('organizers')->user()->organizer_id) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Anda tidak punya izin untuk menghapus sesi ini'
+                ], 401);
+            }
+
+            $session->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Data berhasil dihapus'
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'massage' => 'Terjadi kesalahan'
+            ], 500);
+        }
+    }
 }
