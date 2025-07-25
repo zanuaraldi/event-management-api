@@ -77,11 +77,11 @@ class TicketsController extends BaseController
         try {
             $ticket = TicketsModel::find($id);
 
-            if ($ticket->user_id != auth('users')->user()->user_id) {
+            if (!$ticket) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Anda tidak punya izin ke tiket ini'
-                ], 401);
+                    'massage' => 'Ticket tidak ada'
+                ], 404);
             }
 
             if ($ticket->user_id != auth('users')->user()->user_id) {
