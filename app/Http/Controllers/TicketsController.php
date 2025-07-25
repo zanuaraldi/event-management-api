@@ -72,6 +72,41 @@ class TicketsController extends BaseController
         }
     }
 
+    public function cancelTicket($id)
+    {
+        try {
+            $ticket = TicketsModel::find($id);
+
+            if ($ticket->user_id != auth('users')->user()->user_id) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Anda tidak punya izin ke tiket ini'
+                ], 401);
+            }
+
+            if ($ticket->user_id != auth('users')->user()->user_id) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Anda tidak punya izin ke tiket ini'
+                ], 401);
+            }
+
+            $ticket->update([
+                'status' => 'cancelled'
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'massage' => 'Cancel tiket berhasil',
+                'data' => $ticket
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'massage' => 'Terjadi kesalahan'
+            ], 500);
+        }
+    }
+
     public function checkIn(Request $request)
     {
         try {
