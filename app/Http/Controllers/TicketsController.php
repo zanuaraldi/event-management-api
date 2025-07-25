@@ -25,6 +25,33 @@ class TicketsController extends BaseController
         }
     }
 
+    public function getTicket($id)
+    {
+        try {
+            $ticket = TicketsModel::with('events')->find($id);
+
+            if (!$ticket) {
+                return response()->json([
+                    'success' => false,
+                    'massage' => 'Ticket tidak ada'
+                ], 404);
+            }
+
+            if ($ticket->user_id != auth('users')->user()->user_id) {
+                return response()->json([
+                    'success' => false,
+                    'massage' => 'Tidak ada izin untuk tiket ini'
+                ], 401);
+            }
+
+            return response()->json($ticket);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'massage' => 'Terjadi kesalahan'
+            ], 500);
+        }
+    }
+
     public function getTicketQR($id)
     {
         try {
