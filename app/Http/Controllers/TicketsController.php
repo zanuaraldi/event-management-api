@@ -88,4 +88,26 @@ class TicketsController extends BaseController
             ], 500);
         }
     }
+
+    public function registerTicket($id)
+    {
+        try {
+            $ticket = TicketsModel::create([
+                'user_id' => auth('user')->user()->user_id,
+                'event_id' => $id,
+                'status' => 'registered',
+                'payment_status' => 'pending'
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'massage' => 'Registrasi tiket berhasil di lakukan',
+                'data' => $ticket
+            ], 201);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'massage' => 'Terjadi kesalahan'
+            ], 500);
+        }
+    }
 }
