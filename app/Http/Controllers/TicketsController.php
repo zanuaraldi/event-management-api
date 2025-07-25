@@ -64,10 +64,10 @@ class TicketsController extends BaseController
             //     ], 401);
             // }
 
-            if($checkTicket->status == 'cancelled' || $checkTicket->payment_status == 'pending'){
+            if ($checkTicket->status == 'cancelled' || $checkTicket->payment_status == 'pending') {
                 return response()->json([
                     'success' => false,
-                    'massage' => 'Tiket tidak bisa digunakan'   
+                    'massage' => 'Tiket tidak bisa digunakan'
                 ], 400);
             }
 
