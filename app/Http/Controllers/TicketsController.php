@@ -11,6 +11,20 @@ use Laravel\Lumen\Routing\Controller as BaseController;
 
 class TicketsController extends BaseController
 {
+
+    public function index()
+    {
+        try {
+            $tickets = TicketsModel::select('ticket_id', 'user_id', 'event_id', 'status', 'payment_status', 'qr_code_url')->where('user_id', auth('users')->user()->user_id);
+
+            return response()->json($tickets);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'massage' => 'Terjadi kesalahan'
+            ], 500);
+        }
+    }
+
     public function getTicketQR($id)
     {
         try {
